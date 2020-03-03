@@ -17,7 +17,6 @@ Class ReadOnlyUserPrefs
 
 Package Person {
 Class Person
-Class Address
 Class Email
 Class Name
 Class Phone
@@ -45,7 +44,6 @@ UniquePersonList o--> "*" Person
 Person *--> Name
 Person *--> Phone
 Person *--> Email
-Person *--> Address
 Person *--> "*" Tag
 
 Name -[hidden]right-> Phone
