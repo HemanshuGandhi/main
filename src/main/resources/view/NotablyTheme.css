@@ -386,5 +386,23 @@
     -fx-font-size: 12px;
     -fx-text-fill: #19216c;
     -fx-pref-height: 36px;
+    -fx-min-height: 36px;
     -fx-padding: 0 16px 0 16px;
+}
+
+
+#blockTitleDisplay {
+    -fx-font-family: "Roboto Bold";
+    -fx-font-size: 32;
+    -fx-text-fill: black;
+}
+
+#blockPathDisplay {
+    -fx-font-family: "Roboto Medium";
+    -fx-font-size: 14;
+    -fx-text-fill: #616e7c;
+}
+
+#searchFrequencyLabel {
+    -fx-font-family: "Roboto Medium";
 }

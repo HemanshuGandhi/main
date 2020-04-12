@@ -49,27 +49,27 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 *Command Legend*
 
 * Words in `UPPER_CASE` are the parameters to be supplied by the user e.g. in `open NAME`, `NAME` is a parameter which can be used as `open Notably`.
-* Items in square brackets are optional e.g `-t TITLE [-b BODY]` can be used as `-t Notably -b Lorem ipsum` or as `-t Notably`.
-* Parameters can be in any order e.g. if the command specifies `-t TITLE -b BODY`, `-b BODY -t TITLE` is also acceptable.
+* Items in square brackets are optional e.g `open [-t] TITLE` can be used as `open -t TITLE` or as `open TITLE`, where `TITLE` is the title of the note.
+* Parameters can be in any order e.g. if the command specifies `new -t TITLE [-o]`, `new [-o] -t TITLE` is also acceptable.
 ====
-
+// tag::paths[]
 [#paths]
 ====
 *Paths*
 
-* `Paths` are used to specify the directory you want to `Commands` to be executed.
+* `Paths` are used to specify the directory you want `Commands` to be executed.
 * There are 2 types of  `Path` namely:
-- AbsolutePath (Take reference from the root)
-- RelativePath (Take reference from the current directory)
+- AbsolutePath (which takes reference from the root)
+- RelativePath (which takes reference from the current directory)
 
-The Relative Path operate similar to the command line input that you may be familiar with.
+The Relative Path operates similarly to the command line input that you may be familiar with.
 Listed below are the notations used to define a relative path.
 
 * `..` (Move to parent note)
 * `exampleNote` (Move to child node titled "exampleNote")
 
 [NOTE]
-The title of a Note can take in alphanumeric variables and spaces.
+The title of a Note can take in alphanumeric variables, symbols (except ` and -) and spaces.
 
 **Example**
 
@@ -78,7 +78,7 @@ The picture below helps to illustrate the use of `RelativePath` and `AbsolutePat
 .DataStructure example to illustrate Path
 image::PathExample1.png[width="790"]
 
-The `AbsolutePath` `/CS2101` is equivalent to `RelativePath` `../2101`
+The `AbsolutePath` `/CS2101` is equivalent to `RelativePath` `../CS2101`
 
 Thus `open /CS2101` and `open ../CS2101` would yield the same result.
 
@@ -87,8 +87,8 @@ Paths are used by the `open` and `delete` command
 
 [WARNING]
 We cannot open or delete the parent of the root note because it does not exist. e.g `Delete /../` will result in an error.
+// end::paths[]
 ====
-
 [[Markdown]]
 ====
 *Markdown*
@@ -129,38 +129,30 @@ image::demo/Exit.png[]
 
 If you want to add a new note to the current working directory (currently opened note), use the `new` command and specify the `TITLE` of the note. +
 
-*Format:* `new -t TITLE [-b BODY] [-o]`
+*Format:* `new -t TITLE [-o]`
 
 [IMPORTANT]
 ====
 * The `TITLE` for the note MUST be specified.
-* The `TITLE` for the note can only contain alphabets, numbers and whitespaces.
-====
-
-[NOTE]
-====
-* The `BODY` of the note is optional.
-* If the `BODY` is not specified, the note will have an empty `BODY`.
-* The `BODY` can contain alphabets, numbers, symbols, whitespaces and also line breaks (with `\n`)
+* The `TITLE` for the note can only contain alphabets, numbers, symbols (except ` and -) and whitespaces.
 ====
 
 [TIP]
 ====
-* The `BODY` can even contain MarkDown formatted content. For more information on Markdown in Notably, click <<Markdown, here>>.
 * Use the optional `-o` flag to immediately open the note after creating it.
 ====
 
 ==== Example: Creating new notes
-. Let's first create a note (with a `TITLE` and `BODY`), and open it immediately after. <<New1, (Step 1)>> Type this command: +
+. Let's first create a note (with a `TITLE`), and open it immediately after. <<New1, (Step 1)>> Type this command: +
 
-    new -t Notably -b The quick brown fox jumps over the lazy dog -o`
+    new -t Notably -o
 
 
 . Now the currently open note is `Notably`. Let's add create a note to the currently opened note, <<New2, (Step 2)>> with a `TITLE` only as follows: +
 
     new -t CS2103T
 
-. The new note `CS2103T` has been created succeessfully! <<New3, (Step 3)>> +
+. The new note `CS2103T` has been created successfully! <<New3, (Step 3)>> +
 
 [NOTE]
 ====
@@ -202,9 +194,8 @@ image::demo/Open.png[]
 
 === Edit an existing note: `edit`
 
-If you want to change the `BODY` content of a note, use the `edit` command. This command *replaces* the existing `BODY` content of the currently open note, with the new `BODY` content. +
-
-*Format:* `edit -b BODY`
+If you want to change the `BODY` content of the currently opened note, use the `edit` command. This command *opens* an editing window where you can update the existing `BODY` of the note.
+*Format:* `edit`
 
 [WARNING]
 ====
@@ -212,9 +203,9 @@ If you want to change the `BODY` content of a note, use the `edit` command. This
 ====
 
 ==== Example: Editing the currently opened note
-. Let's replace the `BODY` content of the currently opened note `Workspace`, with "This is the new paragraph". This can be done with the command: +
+. Let's update the `BODY` content of the currently opened note `Workspace`, with "This is the new paragraph". This can be done with the command: +
 
-    edit -b This is the new paragraph
+    edit
 
 .Demo for the `edit` command
 image::demo/Edit1.png[]
@@ -249,26 +240,7 @@ image::demo/Delete1.png[]
 .Demo for the `delete` command (after deletion)
 image::demo/Delete2.png[]
 
-=== Save the data
-
-Notes data are saved in the hard disk automatically after any command that changes the data. +
-There is no need for you to save manually.
-
-=== Auto suggestions
-
-As you type, Notably will provide you suggestions. You can then press kbd:[Tab] to select the first suggestion.
-
-.Demo for the suggestions feature
-image::demo/Suggestions.png[]
-
-=== Auto correct
-
-Even if you mistype, Notably tries its best to correct the typo automatically, as long as the mistyped input command is not too far away from Notably's available commands. This provides you with a more fluid typing experience.
-
-.Demo for the auto-correction feature
-image::demo/Correction.png[]
-
-=== (Coming in v2.0) Find a note based on certain keywords: `search`
+=== Find a note based on certain keywords: `search`
 
 If you need to look for a note that contain a specific keyword, use the `search` command and Notably when show you the result sorted by the number of matches in the note.  +
 *Format:* `search [-s] KEYWORD`
@@ -283,10 +255,33 @@ If you need to look for a note that contain a specific keyword, use the `search`
 ==== Example: Searching for the keyword "Computer science"
 . Let's look through all the notes that we have saved, for the keyword "Computer science" +
 
-    search -s Computer science
+search -s Computer science
 
 .Demo for the `search` command
 image::demo/Search.png[]
+
+=== Save the data
+
+Notes data are saved in the hard disk automatically after any command that changes the data. +
+There is no need for you to save manually.
+
+=== Auto suggestions
+
+As you type, Notably will provide you suggestions. You can then press kbd:[Enter] to select the first suggestion.
+
+.Demo for the suggestions feature
+image::demo/Suggestions.png[]
+
+==== (Coming in v2.0) Suggestion response text when opening or deleting a parent note
+Variations of path with `../` (e.g. `open ../`, `open Note/../Note`, etc.) will not generate a comprehensive response text.
+Currently, typing `open ../` will generate a response text of `Open a note titled "../"` instead of `Open a parent note`.
+
+=== Auto correct
+
+Even if you mistype, Notably tries its best to correct the typo automatically, as long as the mistyped input command is not too far away from Notably's available commands. This provides you with a more fluid typing experience.
+
+.Demo for the auto-correction feature
+image::demo/Correction.png[]
 
 == FAQ
 
@@ -297,9 +292,9 @@ image::demo/Search.png[]
 
 * *View help*: `help`
 * *Exit the program*: `exit`
-* *Create a new note*: `new -t TITLE [-b BODY] [-o]`
+* *Create a new note*: `new -t TITLE [-o]`
 * *Open an existing note*: `open [-t] [PATH/TO/]TITLE`
-* *Edit an existing note*: `edit -b BODY`
+* *Opens an editing window to edit the currently opened note*: `edit`
 * *Delete a note*: `delete [-t] [PATH/TO/]TITLE`
-* *(Coming in v2.0) Find a note based on certain keywords*: `search [-s] KEYWORD`
+* *Find a note based on certain keywords*: `search [-s] KEYWORD`
 

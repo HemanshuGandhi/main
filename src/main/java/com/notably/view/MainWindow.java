@@ -9,11 +9,12 @@ import com.notably.logic.commands.exceptions.CommandException;
 import com.notably.logic.parser.exceptions.ParseException;
 import com.notably.model.Model;
 import com.notably.view.blockcontent.BlockContent;
+import com.notably.view.sidebar.SideBarTreeView;
+import com.notably.view.suggestion.SuggestionsWindowView;
 
 import javafx.beans.Observable;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -54,7 +55,7 @@ public class MainWindow extends ViewPart<Stage> {
     private StackPane sideBarPlaceholder;
 
     @FXML
-    private StackPane blockContentPlaceholder;
+    private VBox blockContentPlaceholder;
 
     @FXML
     private VBox suggestionsWindow;
@@ -67,31 +68,11 @@ public class MainWindow extends ViewPart<Stage> {
         this.model = model;
 
         setWindowDefaultSize(logic.getGuiSettings());
-        //setWindowSettings(primaryStage);
-
         initializeHelpWindow(model);
     }
 
     public Stage getPrimaryStage() {
         return primaryStage;
-    }
-
-    /**
-     * Provides an alternative way to set the settings of the main window, as an alternative
-     * to doing so via fxml tags.
-     *
-     * @param primaryStage the stage corresponding to the main app window.
-     */
-    private void setWindowSettings(Stage primaryStage) {
-        primaryStage.focusedProperty().addListener(((observable, unused, isFocused) -> {
-            if (isFocused) {
-                mainWindow.setEffect(null);
-            } else {
-                ColorAdjust colorAdjust = new ColorAdjust();
-                colorAdjust.setBrightness(-0.4);
-                mainWindow.setEffect(colorAdjust);
-            }
-        }));
     }
 
     /**
@@ -106,7 +87,8 @@ public class MainWindow extends ViewPart<Stage> {
 
         blockContent = new BlockContent(blockContentPlaceholder, logic, model);
 
-        suggestionsWindowView = new SuggestionsWindowView(model.getSuggestions(), model.responseTextProperty());
+        suggestionsWindowView = new SuggestionsWindowView(model.getSuggestions(),
+                model.responseTextProperty());
         suggestionsWindow.getChildren().add(suggestionsWindowView.getRoot());
     }
 

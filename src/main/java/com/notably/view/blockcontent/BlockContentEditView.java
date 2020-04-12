@@ -159,7 +159,7 @@ public class BlockContentEditView extends ViewPart<Stage> {
     }
 
     /**
-     * Sets the {@link TextArea}'s content to the currently open block's Markdown body.
+     * Sets the {@link TextArea}'s content to the currently open block's content in markdown form.
      *
      * @param model App's model
      */
@@ -168,6 +168,7 @@ public class BlockContentEditView extends ViewPart<Stage> {
 
         AbsolutePath currentlyOpenPath = model.getCurrentlyOpenPath();
         BlockTreeItem currentlyOpenBlock = model.getBlockTree().get(currentlyOpenPath);
+
         String markdownBody = currentlyOpenBlock.getBody().getText();
 
         blockContentTextArea.setText(markdownBody);
@@ -201,7 +202,6 @@ public class BlockContentEditView extends ViewPart<Stage> {
      * ie. the Block Edit modal is to be shown, false otherwise.
      */
     private void updateMainWindowStyle(Boolean isBlockEditable) {
-        //logger.severe(isBlockEditable.toString());
         Node mainWindow = parentStage.getScene().lookup("#mainWindow");
         ChangeListener<Boolean> focusedListener = (observable, unused, isFocused) -> {
             if (!isFocused && stage.isShowing()) {

@@ -15,7 +15,6 @@ import com.notably.model.block.exceptions.NoSuchBlockException;
  */
 public class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "delete";
-
     private Path targetPath;
 
     public DeleteCommand(Path targetPath) {
@@ -36,7 +35,6 @@ public class DeleteCommand extends Command {
             throw new CommandException(ex.getMessage());
         }
     }
-
 
 
 }

@@ -19,7 +19,7 @@
                 <URL value="@/view/NotablyTheme.css" />
                 <URL value="@/view/Extensions.css" />
             </stylesheets>
-            <VBox alignment="CENTER" styleClass="block-edit-modal">
+            <VBox alignment="CENTER" styleClass="block-edit-modal" >
                 <children>
                     <TextArea fx:id="blockContentTextArea" editable="true" wrapText="true" VBox.vgrow="ALWAYS">
                         <VBox.margin>

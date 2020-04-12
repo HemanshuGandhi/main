@@ -103,6 +103,7 @@ link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 * <<Design-SuggestionEngine,*`SuggestionEngine`*>>: Deals with suggestions generation.
 * <<Design-CorrectionEngine,*`CorrectionEngine`*>>: Deals with auto-correction.
 
+// tag::parser[]
 [[Design-NotablyParser]]
 ==== NotabyParser component
 
@@ -121,6 +122,7 @@ image::DeleteSequenceDiagram.png[]
 
 NOTE: The lifeline for `DeleteCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline reaches the end of diagram.
 
+// end::parser[]
 [[Design-SuggestionEngine]]
 ==== SuggestionEngine component
 
@@ -288,6 +290,7 @@ response text and suggestions immediately to the UI, `SuggestionEngine` will not
 3. `SuggestionEngine`, `SuggestionCommandParser`, `SuggestionCommand`, `SuggestionItem`, and `SuggestionModel` are
 implemented as interfaces, in an attempt to make the design of the `SuggestionEngine` component resilient to change.
 
+// tag::paths[]
 [[Implementation-Path]]
 === Paths
 Given below is the implementation detail of the Path feature and some alternative design considerations.
@@ -309,8 +312,6 @@ image::PathExample1.png[]
 
 Using `AbsolutePath` `open /CS2101` and using `RelativePath` `open ../CS2101` would yield the same result Design Consideration.
 
-
-
 ==== Design Consideration
 
 *Aspect: Implementation of `Path`* :
@@ -326,6 +327,7 @@ its a Relative or Absolute path.
 **  Pros: More readable and OOP, each class can have their individual validity REGEX.
 *   Alternative 2: Relative path `CS2103/../note1` would not be logically equivalent to `note1`.
 
+// end::paths[]
 [[Implementation-DataStructure]]
 === Tree Data Structure
 Notably aims to provide end user a neat and well-organized workspace to store their notes. This is done by creating a tree structure; allowing users to create folder-like paths to organize their notes and group them into categories to their own liking.
@@ -378,6 +380,7 @@ Refer to the guide <<Testing#, here>>.
 
 Refer to the guide <<DevOps#, here>>.
 
+// tag::Scope&User[]
 [appendix]
 == Product Scope
 
@@ -414,6 +417,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |=======================================================================
 
+// end::Scope&User[]
 _{More to be added}_
 
 [appendix]

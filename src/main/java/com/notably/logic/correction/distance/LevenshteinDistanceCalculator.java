@@ -1,12 +1,17 @@
 package com.notably.logic.correction.distance;
 
 import java.util.Objects;
+import java.util.logging.Logger;
+
+import com.notably.commons.LogsCenter;
 
 /**
  * An implementation of the Levenshtein algorithm for calculating the edit distance of two {@link Strings}.
  * Inspired by https://web.stanford.edu/class/cs124/lec/med.pdf.
  */
 public class LevenshteinDistanceCalculator implements EditDistanceCalculator {
+    private static final Logger logger = LogsCenter.getLogger(LevenshteinDistanceCalculator.class);
+
     private final boolean isCaseSensitive;
 
     /**
@@ -61,6 +66,9 @@ public class LevenshteinDistanceCalculator implements EditDistanceCalculator {
                 }
             }
         }
+
+        logger.fine(String.format("Edit distance between \"%s\" and \"%s\" is %d", first, second,
+                distance[first.length()][second.length()]));
 
         return distance[first.length()][second.length()];
     }

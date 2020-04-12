@@ -1,7 +1,7 @@
 package com.notably.logic.correction;
 
 /**
- * Represents a correction engine.
+ * API for a correction engine.
  */
 public interface CorrectionEngine<T> {
     /**

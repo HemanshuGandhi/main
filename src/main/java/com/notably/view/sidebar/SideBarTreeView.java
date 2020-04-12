@@ -1,19 +1,16 @@
-package com.notably.view;
+package com.notably.view.sidebar;
 
 import com.notably.commons.path.AbsolutePath;
 import com.notably.model.block.Block;
 import com.notably.model.block.BlockTree;
 import com.notably.model.block.BlockTreeItem;
+import com.notably.view.ViewPart;
 
 import javafx.beans.property.Property;
-import javafx.event.Event;
-import javafx.event.EventDispatchChain;
 import javafx.event.EventDispatcher;
 import javafx.fxml.FXML;
-import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 
 /**
@@ -69,7 +66,7 @@ public class SideBarTreeView extends ViewPart<Region> {
      * Calls helper functions that set the strategies for populating the SideBarTreeView with data.
      */
     private void setTreeStructure() {
-        sideBarTreeView.setCellFactory(treeView -> new SideBarTreeViewCell());
+        sideBarTreeView.setCellFactory(treeView -> new SideBarTreeViewCell(currentlyOpenedNote));
         useLevelDisplayStrategy();
         useExpansionStrategy();
     }
@@ -134,57 +131,5 @@ public class SideBarTreeView extends ViewPart<Region> {
                         grandChild.setExpanded(false);
                     });
                 });
-    }
-
-    /**
-     * Custom {@code TreeCell} that displays the text of a {@code Block}.
-     */
-    class SideBarTreeViewCell extends TreeCell<Block> {
-        @Override
-        protected void updateItem(Block block, boolean empty) {
-            super.updateItem(block, empty);
-
-            setGraphic(null);
-            if (empty || block == null) {
-                setText(null);
-            } else {
-                setText(getNoteTitle());
-                setSelectedProperty(block);
-            }
-        }
-
-        private String getNoteTitle() {
-            return getItem().getTitle().getText();
-        }
-
-        private void setSelectedProperty(Block block) {
-            if ((block == currentlyOpenedNote.getBlock())) {
-                updateSelected(true);
-            } else {
-                updateSelected(false);
-            }
-        }
-    }
-
-    /**
-     * Custom {@code EventDispatcher} to allow for finer control over mouse click events.
-     * A {@link SideBarTreeViewCell} should not respond to any mouse click events.
-     *
-     */
-    class TreeCellEventDispatcher implements EventDispatcher {
-        private final EventDispatcher original;
-
-        public TreeCellEventDispatcher(EventDispatcher original) {
-            this.original = original;
-        }
-
-        @Override
-        public Event dispatchEvent(Event event, EventDispatchChain tail) {
-
-            if (event.getEventType().equals(MouseEvent.MOUSE_PRESSED)) {
-                event.consume();
-            }
-            return original.dispatchEvent(event, tail);
-        }
     }
 }

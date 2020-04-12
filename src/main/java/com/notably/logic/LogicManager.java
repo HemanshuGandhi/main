@@ -14,7 +14,6 @@ import com.notably.logic.exceptions.EditBlockBodyException;
 import com.notably.logic.parser.NotablyParser;
 import com.notably.logic.parser.exceptions.ParseException;
 import com.notably.logic.suggestion.SuggestionEngine;
-import com.notably.logic.suggestion.SuggestionEngineImpl;
 import com.notably.model.Model;
 import com.notably.model.block.Body;
 import com.notably.model.block.exceptions.CannotModifyRootException;
@@ -26,7 +25,7 @@ import com.notably.storage.Storage;
  */
 public class LogicManager implements Logic {
     public static final String FILE_OPS_ERROR_MESSAGE = "Could not save data to file: ";
-    private final Logger logger = LogsCenter.getLogger(LogicManager.class);
+    private static final Logger logger = LogsCenter.getLogger(LogicManager.class);
 
     private final Model model;
     private final Storage storage;
@@ -37,13 +36,12 @@ public class LogicManager implements Logic {
         this.model = model;
         this.storage = storage;
         notablyParser = new NotablyParser(model);
-        suggestionEngine = new SuggestionEngineImpl(model);
+        suggestionEngine = new SuggestionEngine(model);
     }
 
     @Override
     public void execute(String commandText) throws CommandException, ParseException {
-        logger.info("----------------[USER COMMAND][" + commandText + "]");
-
+        logger.info(String.format("User inputted '%s'", commandText));
         try {
             List<? extends Command> commands = notablyParser.parseCommand(commandText);
             for (Command command : commands) {

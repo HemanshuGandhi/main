@@ -1,10 +1,14 @@
 package com.notably.logic.parser;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.notably.commons.LogsCenter;
 import com.notably.commons.path.AbsolutePath;
 import com.notably.logic.commands.Command;
 import com.notably.logic.commands.DeleteCommand;
@@ -35,6 +39,7 @@ public class NotablyParser {
 
     private static final String ERROR_MESSAGE = "\"%s\" is an invalid command format. "
             + "To see the list of available commands, type: help";
+    private final Logger logger = LogsCenter.getLogger(NotablyParser.class);
 
     private Model notablyModel;
     private final CorrectionEngine<String> commandCorrectionEngine;
@@ -56,16 +61,21 @@ public class NotablyParser {
      * @throws ParseException when there is a invalid input string.
      */
     public List<? extends Command> parseCommand(String userInput) throws ParseException {
+        requireNonNull(userInput);
+        logger.info(String.format("Parsing '%s'", userInput));
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
         if (!matcher.matches()) {
+            logger.warning(String.format("'%s' is an invalid command format.", userInput));
             throw new ParseException(String.format(ERROR_MESSAGE, userInput));
         }
 
         String commandWord = matcher.group("commandWord");
         CorrectionResult<String> correctionResult = commandCorrectionEngine.correct(commandWord);
         if (correctionResult.getCorrectionStatus() == CorrectionStatus.FAILED) {
+            logger.warning(String.format("'%s' is an invalid command word.", commandWord));
             throw new ParseException(String.format(ERROR_MESSAGE, commandWord));
         }
+
         commandWord = correctionResult.getCorrectedItems().get(0);
 
         final String arguments = matcher.group("arguments");
@@ -88,7 +98,6 @@ public class NotablyParser {
 
         case ExitCommand.COMMAND_WORD:
             return List.of(new ExitCommand());
-
         default:
             throw new ParseException(String.format(ERROR_MESSAGE, commandWord));
         }

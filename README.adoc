@@ -21,7 +21,6 @@ If so, Notably will definitely be your **best** note-taking app buddy!
 * Optimized for those who prefer to work with a Command Line Interface (CLI) while still having the benefits of a Graphical User Interface (GUI),
 Notably allows you to get your notes taken down faster than traditional GUI apps.
 * Notably can find all your notes for you based on the keywords you input. If you cannot remember the precise keywords, fret not! Notably will give you auto corrections and suggestions.
-* At the end of the day, you can export your notes in Notably to other formats, such as PDF.
 
 Note-taking? Notably.
 

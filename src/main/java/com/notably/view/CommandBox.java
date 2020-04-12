@@ -2,6 +2,7 @@ package com.notably.view;
 
 import com.notably.logic.commands.exceptions.CommandException;
 import com.notably.logic.parser.exceptions.ParseException;
+import com.notably.view.suggestion.SuggestionsWindowView;
 
 import javafx.application.Platform;
 import javafx.beans.property.StringProperty;

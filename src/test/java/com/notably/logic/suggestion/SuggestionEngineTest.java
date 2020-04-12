@@ -16,11 +16,10 @@ import com.notably.commons.path.exceptions.InvalidPathException;
 import com.notably.model.Model;
 import com.notably.model.suggestion.SuggestionItem;
 
-public class SuggestionEngineImplTest {
+public class SuggestionEngineTest {
     private static AbsolutePath toCs2103t;
     private static List<AbsolutePath> paths;
     private static Model model;
-    private static SuggestionEngine suggestionEngine;
 
     private static final String DELETE_RESPONSE_MESSAGE_WITH_TITLE = "Delete a note titled \"%s\"";
     private static final String OPEN_RESPONSE_MESSAGE_WITH_TITLE = "Open a note titled \"%s\"";
@@ -39,8 +38,6 @@ public class SuggestionEngineImplTest {
         toCs2103t = SuggestionTestUtil.getToCs2103t();
         paths = new ArrayList<>();
         paths.add(toCs2103t);
-
-        suggestionEngine = new SuggestionEngineImpl(model);
     }
 
     @AfterEach
@@ -54,7 +51,7 @@ public class SuggestionEngineImplTest {
         String userInputWithoutPath = "dele ";
         String path = toCs2103t.getStringRepresentation();
         String userInput = userInputWithoutPath + path;
-        suggestionEngine.suggest(userInput);
+        SuggestionEngine suggestionEngine = new SuggestionEngine(model);
         model.setInput(userInput);
 
         List<SuggestionItem> suggestions = model.getSuggestions();
@@ -71,7 +68,7 @@ public class SuggestionEngineImplTest {
         String userInputWithoutPath = "op ";
         String path = toCs2103t.getStringRepresentation();
         String userInput = userInputWithoutPath + path;
-        suggestionEngine.suggest(userInput);
+        SuggestionEngine suggestionEngine = new SuggestionEngine(model);
         model.setInput(userInput);
 
         List<SuggestionItem> suggestions = model.getSuggestions();
@@ -89,7 +86,8 @@ public class SuggestionEngineImplTest {
         String path = "Aa123!@#$%^&*()";
         String arg = " " + PREFIX_TITLE + " " + path;
         String userInput = userInputWithoutPath + arg;
-        suggestionEngine.suggest(userInput);
+        SuggestionEngine suggestionEngine = new SuggestionEngine(model);
+        model.setInput(userInput);
 
         assertEquals(Optional.of(String.format(NEW_RESPONSE_MESSAGE_WITH_TITLE, path)),
                 model.responseTextProperty().getValue());
@@ -100,7 +98,8 @@ public class SuggestionEngineImplTest {
         String userInputWithoutKeyword = "sear ";
         String keyword = "FAlse";
         String userInput = userInputWithoutKeyword + " " + keyword;
-        suggestionEngine.suggest(userInput);
+        SuggestionEngine suggestionEngine = new SuggestionEngine(model);
+        model.setInput(userInput);
 
         List<SuggestionItem> suggestions = model.getSuggestions();
 
@@ -117,21 +116,27 @@ public class SuggestionEngineImplTest {
 
     @Test
     public void suggest_correctedEditCommand() {
-        suggestionEngine.suggest("edt");
+        String userInput = "edt";
+        SuggestionEngine suggestionEngine = new SuggestionEngine(model);
+        model.setInput(userInput);
 
         assertEquals(Optional.of(EDIT_RESPONSE_MESSAGE), model.responseTextProperty().getValue());
     }
 
     @Test
     public void suggest_correctedHelpCommand() {
-        suggestionEngine.suggest("hAlp");
+        String userInput = "hAlp";
+        SuggestionEngine suggestionEngine = new SuggestionEngine(model);
+        model.setInput(userInput);
 
         assertEquals(Optional.of(HELP_RESPONSE_MESSAGE), model.responseTextProperty().getValue());
     }
 
     @Test
     public void suggest_correctedExitCommand() {
-        suggestionEngine.suggest("ex");
+        String userInput = "ex";
+        SuggestionEngine suggestionEngine = new SuggestionEngine(model);
+        model.setInput(userInput);
 
         assertEquals(Optional.of(EXIT_RESPONSE_MESSAGE), model.responseTextProperty().getValue());
     }
@@ -139,7 +144,8 @@ public class SuggestionEngineImplTest {
     @Test
     public void suggest_invalidCommand_displaysErrorMessage() {
         String userInput = "randomCmd";
-        suggestionEngine.suggest(userInput);
+        SuggestionEngine suggestionEngine = new SuggestionEngine(model);
+        model.setInput(userInput);
 
         assertEquals(Optional.of(String.format(ERROR_RESPONSE_MESSAGE, userInput)),
                 model.responseTextProperty().getValue());

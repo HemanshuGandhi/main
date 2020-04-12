@@ -1,6 +1,8 @@
 body {
     font-family: "Roboto", Arial, Helvetica, sans-serif;
     font-weight: 500;
+    margin-left: 0;
+    margin-right: 25px;
 }
 
 h1,

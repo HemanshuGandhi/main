@@ -2,13 +2,13 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.Scene?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.Scene?>
 
-<?import javafx.scene.control.Label?>
 <fx:root type="javafx.stage.Stage" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
          title="Notably" minWidth="567" minHeight="412" onCloseRequest="#handleExit" >
   <icons>
@@ -23,8 +23,9 @@
 
       <VBox fx:id="mainWindow">
         <SplitPane VBox.vgrow="ALWAYS">
-          <VBox fx:id="sideBar" VBox.vgrow="ALWAYS" SplitPane.resizableWithParent="false" minWidth="180">
-            <Label fx:id="notablyLogo" VBox.vgrow="ALWAYS" text="NOTABLY" />
+          <VBox fx:id="sideBar" VBox.vgrow="ALWAYS" SplitPane.resizableWithParent="false"
+                minWidth="180" focusTraversable="false">
+            <Label fx:id="notablyLogo" VBox.vgrow="NEVER" text="NOTABLY" />
             <StackPane fx:id="sideBarPlaceholder" VBox.vgrow="ALWAYS" />
           </VBox>
 
@@ -37,8 +38,9 @@
             </StackPane>
 
             <StackPane VBox.vgrow="ALWAYS" styleClass="note-block-pane">
-              <StackPane fx:id="blockContentPlaceholder" VBox.vgrow="ALWAYS" focusTraversable="true" />
-              <VBox fx:id="suggestionsWindow" StackPane.alignment="TOP_CENTER" VBox.vgrow="NEVER" />
+              <VBox fx:id="blockContentPlaceholder" VBox.vgrow="ALWAYS" />
+              <VBox fx:id="suggestionsWindow" StackPane.alignment="TOP_CENTER" VBox.vgrow="NEVER"
+                    mouseTransparent="true" focusTraversable="false" />
               <padding>
                 <Insets top="1" right="20" bottom="5" left="20" />
               </padding>

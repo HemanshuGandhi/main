@@ -3,7 +3,9 @@ package com.notably.logic.correction;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
+import com.notably.commons.LogsCenter;
 import com.notably.logic.correction.distance.EditDistanceCalculator;
 import com.notably.logic.correction.distance.LevenshteinDistanceCalculator;
 
@@ -11,6 +13,8 @@ import com.notably.logic.correction.distance.LevenshteinDistanceCalculator;
  * Represents a correction engine that works on {@link String}s.
  */
 public class StringCorrectionEngine implements CorrectionEngine<String> {
+    private static final Logger logger = LogsCenter.getLogger(StringCorrectionEngine.class);
+
     private final EditDistanceCalculator editDistanceCalculator;
     private final List<String> options;
     private final CorrectionEngineParameters parameters;
@@ -74,13 +78,16 @@ public class StringCorrectionEngine implements CorrectionEngine<String> {
         }
 
         if (closestDistance > parameters.getDistanceThreshold()) {
+            logger.info(String.format("Failed to correct \"%s\".", uncorrected));
             return new CorrectionResult<>(CorrectionStatus.FAILED);
         }
 
         if (correctedItems.size() == 1 && correctedItems.get(0).equalsIgnoreCase(uncorrected)) {
+            logger.info(String.format("\"%s\" is already valid, left unchanged.", uncorrected));
             return new CorrectionResult<>(CorrectionStatus.UNCHANGED, correctedItems);
         }
 
+        logger.info(String.format("Corrected \"%s\" to %s.", uncorrected, correctedItems));
         return new CorrectionResult<String>(CorrectionStatus.CORRECTED, correctedItems);
     }
 
@@ -95,11 +102,15 @@ public class StringCorrectionEngine implements CorrectionEngine<String> {
         Objects.requireNonNull(input);
         Objects.requireNonNull(reference);
 
+        int distance;
         if (parameters.isForwardMatching() && input.length() <= reference.length()) {
-            return CorrectionEngineUtil.calculateForwardMatchingDistance(editDistanceCalculator,
+            distance = CorrectionEngineUtil.calculateForwardMatchingDistance(editDistanceCalculator,
                     input, reference, parameters.getForwardMatchingThreshold());
+        } else {
+            distance = editDistanceCalculator.calculateDistance(input, reference);
         }
-        return editDistanceCalculator.calculateDistance(input, reference);
+
+        return distance;
     }
 }
 

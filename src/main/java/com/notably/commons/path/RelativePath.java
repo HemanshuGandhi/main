@@ -1,5 +1,7 @@
 package com.notably.commons.path;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +21,7 @@ public class RelativePath implements Path, Comparable<RelativePath> {
     private final List<String> components;
 
     private RelativePath(String relativePathString) {
+        requireNonNull(relativePathString);
         this.components = new ArrayList<>();
         for (String obj : relativePathString.split("/")) {
             if (!obj.trim().equals("")) {
@@ -28,6 +31,7 @@ public class RelativePath implements Path, Comparable<RelativePath> {
     }
 
     private RelativePath(List<String> components) {
+        requireNonNull(components);
         this.components = components;
     }
 
@@ -37,6 +41,7 @@ public class RelativePath implements Path, Comparable<RelativePath> {
      * @return returns true if String is a valid relative Path.
      */
     public static boolean isValidRelativePath(String relativePathString) {
+        requireNonNull(relativePathString);
         return relativePathString.matches(VALIDATION_REGEX);
     }
 
@@ -46,6 +51,7 @@ public class RelativePath implements Path, Comparable<RelativePath> {
      * @return the converted RelativePath object.
      */
     public static RelativePath fromString(String relativePathString) {
+        requireNonNull(relativePathString);
         if (!isValidRelativePath(relativePathString)) {
             throw new InvalidPathException("Not a relative path");
         }
@@ -59,6 +65,7 @@ public class RelativePath implements Path, Comparable<RelativePath> {
      * @return a relativePath object.
      */
     public static RelativePath fromComponents(List<String> components) {
+        requireNonNull(components);
         return new RelativePath(components);
 
     }
@@ -71,6 +78,8 @@ public class RelativePath implements Path, Comparable<RelativePath> {
      */
     public static RelativePath fromAbsolutePath(AbsolutePath absolutePath,
             AbsolutePath currentWorkingPath) {
+        requireNonNull(absolutePath);
+        requireNonNull(currentWorkingPath);
         int sizeOfCurrent = currentWorkingPath.getComponents().size();
         int sizeOfAbsolute = absolutePath.getComponents().size();
         List<String> componentsToRelative;
@@ -88,6 +97,7 @@ public class RelativePath implements Path, Comparable<RelativePath> {
      * @return the absolute path of the relative path.
      */
     public AbsolutePath toAbsolutePath(AbsolutePath currentWorkingPath) {
+        requireNonNull(currentWorkingPath);
         return AbsolutePath.fromRelativePath(this, currentWorkingPath);
     }
 
@@ -103,7 +113,7 @@ public class RelativePath implements Path, Comparable<RelativePath> {
 
     @Override
     public int compareTo(RelativePath path) {
-        Objects.requireNonNull(path);
+        requireNonNull(path);
 
         List<String> components = PathUtil.normaliseRelativeComponents(this.components);
         List<String> pathComponents = PathUtil.normaliseRelativeComponents(path.components);

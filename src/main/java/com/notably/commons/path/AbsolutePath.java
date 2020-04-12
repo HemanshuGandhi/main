@@ -1,5 +1,7 @@
 package com.notably.commons.path;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -17,6 +19,7 @@ public class AbsolutePath implements Path, Comparable<AbsolutePath> {
     private final List<String> components;
 
     private AbsolutePath(String absolutePathString) {
+        requireNonNull(absolutePathString);
         this.components = new ArrayList<>();
         for (String obj : absolutePathString.split("/")) {
             if (!obj.trim().equals("")) {
@@ -26,6 +29,7 @@ public class AbsolutePath implements Path, Comparable<AbsolutePath> {
     }
 
     public AbsolutePath(List<String> absolutePathList) {
+        requireNonNull(absolutePathList);
         this.components = absolutePathList;
     }
 
@@ -35,6 +39,7 @@ public class AbsolutePath implements Path, Comparable<AbsolutePath> {
      * @return
      */
     public static boolean isValidAbsolutePath(String absolutePathString) {
+        requireNonNull(absolutePathString);
         return absolutePathString.matches(VALIDATION_REGEX);
     }
 
@@ -44,6 +49,7 @@ public class AbsolutePath implements Path, Comparable<AbsolutePath> {
      * @return Absolute Path.
      */
     public static AbsolutePath fromString(String absolutePathString) {
+        requireNonNull(absolutePathString);
         if (!isValidAbsolutePath(absolutePathString)) {
             throw new InvalidPathException(INVALID_ABSOLUTE_PATH);
         }
@@ -56,6 +62,7 @@ public class AbsolutePath implements Path, Comparable<AbsolutePath> {
      * @return Absolute Path.
      */
     public static AbsolutePath fromComponents(List<String> absoluteComponents) {
+        requireNonNull(absoluteComponents);
         return new AbsolutePath(absoluteComponents);
     }
 
@@ -68,6 +75,8 @@ public class AbsolutePath implements Path, Comparable<AbsolutePath> {
      */
     public static AbsolutePath fromRelativePath(RelativePath relativePath,
             AbsolutePath currentWorkingPath) {
+        requireNonNull(relativePath);
+        requireNonNull(currentWorkingPath);
         List<String> relativeComponents = relativePath.getComponents();
         List<String> base = currentWorkingPath.getComponents();
         return new AbsolutePath(PathUtil.normaliseRelativeComponents(base, relativeComponents));
@@ -79,6 +88,7 @@ public class AbsolutePath implements Path, Comparable<AbsolutePath> {
      * @return the converted RelativePath
      */
     public RelativePath toRelativePath(AbsolutePath currentWorkingPath) {
+        requireNonNull(currentWorkingPath);
         return RelativePath.fromAbsolutePath(this, currentWorkingPath);
     }
 
@@ -94,7 +104,7 @@ public class AbsolutePath implements Path, Comparable<AbsolutePath> {
 
     @Override
     public int compareTo(AbsolutePath path) {
-        Objects.requireNonNull(path);
+        requireNonNull(path);
 
         if (components.size() != path.components.size()) {
             return components.size() - path.components.size();

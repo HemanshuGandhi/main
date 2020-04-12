@@ -5,8 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import com.notably.commons.LogsCenter;
 import com.notably.commons.path.AbsolutePath;
 import com.notably.logic.correction.distance.EditDistanceCalculator;
 import com.notably.logic.correction.distance.LevenshteinDistanceCalculator;
@@ -18,6 +20,8 @@ import com.notably.model.block.BlockTreeItem;
  * Represents a correction engine that works on {@link AbsolutePath}s
  */
 public class AbsolutePathCorrectionEngine implements CorrectionEngine<AbsolutePath> {
+    private static final Logger logger = LogsCenter.getLogger(AbsolutePathCorrectionEngine.class);
+
     private final EditDistanceCalculator editDistanceCalculator;
     private final Model model;
     private final CorrectionEngineParameters parameters;
@@ -79,13 +83,16 @@ public class AbsolutePathCorrectionEngine implements CorrectionEngine<AbsolutePa
         }
 
         if (closestDistance > parameters.getDistanceThreshold()) {
+            logger.info(String.format("Failed to correct \"%s\".", uncorrected));
             return new CorrectionResult<>(CorrectionStatus.FAILED);
         }
 
         if (correctedItems.size() == 1 && correctedItems.get(0).equals(uncorrected)) {
+            logger.info(String.format("\"%s\" is already valid, left unchanged.", uncorrected));
             return new CorrectionResult<>(CorrectionStatus.UNCHANGED, correctedItems);
         }
 
+        logger.info(String.format("Corrected \"%s\" to %s.", uncorrected, correctedItems));
         return new CorrectionResult<>(CorrectionStatus.CORRECTED, correctedItems);
     }
 
