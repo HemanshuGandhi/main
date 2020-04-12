@@ -1,12 +1,15 @@
 package com.notably.logic.parser;
 
-import static com.notably.logic.parser.CliSyntax.PREFIX_TITLE;
+import static com.notably.commons.parser.CliSyntax.PREFIX_TITLE;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 import java.util.logging.Logger;
 
 import com.notably.commons.LogsCenter;
+import com.notably.commons.parser.ArgumentMultimap;
+import com.notably.commons.parser.ArgumentTokenizer;
+import com.notably.commons.parser.ParserUtil;
 import com.notably.commons.path.AbsolutePath;
 import com.notably.logic.commands.DeleteCommand;
 import com.notably.logic.correction.CorrectionEngine;

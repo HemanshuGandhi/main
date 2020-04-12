@@ -15,16 +15,26 @@ import com.notably.model.block.exceptions.NoSuchBlockException;
 import javafx.scene.control.TreeItem;
 
 /**
- * Implementation class of BlockTreeItem.
+ * Implementation class of {@link BlockTreeItem}.
  */
 public class BlockTreeItemImpl implements BlockTreeItem {
     private TreeItem<Block> blockTreeItem;
 
+    /**
+     * Creates a new {@link BlockTreeItem} implementation object.
+     *
+     * @param block {@link Block} to encapsulate
+     */
     public BlockTreeItemImpl(Block block) {
         requireNonNull(block);
         blockTreeItem = new TreeItem<Block>(block);
     }
 
+    /**
+     * Creates a new {@link BlockTreeItem} implementation object.
+     *
+     * @param treeItem {@code TreeItem<Block>} to encapsulate
+     */
     public BlockTreeItemImpl(TreeItem<Block> treeItem) {
         requireNonNull(treeItem);
         blockTreeItem = treeItem;
@@ -32,6 +42,8 @@ public class BlockTreeItemImpl implements BlockTreeItem {
 
     /**
      * Static method to create a root {@code BlockTreeItem}
+     *
+     * @return Root {@link BlockTreeItem}
      */
     public static BlockTreeItem createRootBlockTreeItem() {
         Block root = BlockImpl.createRootBlock();

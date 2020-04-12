@@ -1,8 +1,7 @@
 package com.notably.model.block.exceptions;
 
 /**
- * Signals that the operation will result in duplicate Block(Blocks are considered duplicates if they have the same
- * parent and title).
+ * Signals that the operation will modify a root {@link Block}, which is not allowed by design.
  */
 public class CannotModifyRootException extends RuntimeException {
     public CannotModifyRootException() {

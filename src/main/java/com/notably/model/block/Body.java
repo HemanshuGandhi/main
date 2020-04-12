@@ -3,7 +3,7 @@ package com.notably.model.block;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Represents a Block's body in Notably.
+ * Represents a {@code Block}'s body in Notably.
  * Guarantees: immutable; is non-null
  */
 public class Body {
@@ -12,7 +12,7 @@ public class Body {
     /**
      * Constructs a {@code Body}.
      *
-     * @param body A valid body.
+     * @param body A valid body text string.
      */
     public Body(String body) {
         requireNonNull(body);
@@ -20,7 +20,7 @@ public class Body {
     }
 
     /**
-     * Returns a String of the Body contents.
+     * Returns a {@code String} of the {@code Body} contents.
      *
      * @return Body text string.
      */

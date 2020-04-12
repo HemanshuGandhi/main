@@ -1,6 +1,6 @@
 package com.notably.logic.suggestion;
 
-import static com.notably.logic.parser.CliSyntax.PREFIX_TITLE;
+import static com.notably.commons.parser.CliSyntax.PREFIX_TITLE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
@@ -103,15 +103,12 @@ public class SuggestionEngineTest {
 
         List<SuggestionItem> suggestions = model.getSuggestions();
 
-        // Expected suggestions
-        List<SuggestionItem> expectedSuggestions = SuggestionTestUtil.getExpectedSearchSugForKeywordFalse();
-
-        // Test suggestions
-        SuggestionTestUtil.assertSearchSuggestions(expectedSuggestions, suggestions);
-
-        // Test response text
         assertEquals(Optional.of(String.format(SEARCH_RESPONSE_MESSAGE_WITH_KEYWORD, keyword)),
                 model.responseTextProperty().getValue());
+
+        List<SuggestionItem> expectedSuggestions = SuggestionTestUtil.getExpectedSearchSugForKeywordFalse();
+        SuggestionTestUtil.assertSearchSuggestions(expectedSuggestions, suggestions, model);
+
     }
 
     @Test

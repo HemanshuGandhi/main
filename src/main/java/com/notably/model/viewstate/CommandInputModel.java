@@ -27,4 +27,9 @@ public interface CommandInputModel {
      * @param input A String corresponding to the new text data in the CommandInputModel.
      */
     void setInput(String input);
+
+    /**
+     * Clears the data saved in the CommandInputModel.
+     */
+    void clearInput();
 }

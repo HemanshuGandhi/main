@@ -1,18 +1,22 @@
 package com.notably.model.block;
 
 /**
- * API of the Block component.
+ * API of the {@link Block} component.
  *
- * A Block is a data node containing a title and a (optionally empty) body.
+ * A {@link Block} is a data node containing a {@link Title} and a (optionally empty) {@link Body}.
  */
 public interface Block {
     /**
-     * Gets the title of a block.
+     * Gets the {@link Title} of a {@link Block}.
+     *
+     * @return {@link Title} of the {@link Block}
      */
     Title getTitle();
 
     /**
-     * Gets the body content of a block.
+     * Gets the {@link Body} content of a {@link Block}.
+     *
+     * @return {@link Body} of the {@link Block}
      */
     Body getBody();
 }

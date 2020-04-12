@@ -49,6 +49,11 @@ class OpenCommandParserTest {
     }
 
     @Test
+    void parse_rootTitleArgument_throwParseException() throws ParseException {
+        assertThrows(ParseException.class, () -> openCommandParser.parse("-t /"));
+    }
+
+    @Test
     void parse_invalidPathArgument_throwParseException() throws ParseException {
         assertThrows(ParseException.class, () -> openCommandParser.parse("-t /nonExisting"));
     }

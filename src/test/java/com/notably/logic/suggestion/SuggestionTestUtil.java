@@ -1,6 +1,7 @@
 package com.notably.logic.suggestion;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ import com.notably.model.viewstate.ViewStateModelImpl;
 import com.notably.testutil.TypicalBlockModel;
 
 /**
- * Contains helper methods for testing suggestion feature.
+ * Contains helper methods for testing generator feature.
  */
 public class SuggestionTestUtil {
     public static Model getModel() {
@@ -98,16 +99,33 @@ public class SuggestionTestUtil {
      * @param suggestions The actual list of suggestions.
      */
     public static void assertSearchSuggestions(List<SuggestionItem> expectedSuggestions,
-                                             List<SuggestionItem> suggestions) {
+                                             List<SuggestionItem> suggestions, Model model) {
         assertEquals(expectedSuggestions.stream().map(s -> s.getProperty("displayText")).collect(Collectors.toList()),
                 suggestions.stream().map(s -> s.getProperty("displayText")).collect(Collectors.toList()));
 
         assertEquals(expectedSuggestions.stream().map(s -> s.getProperty("frequency")).collect(Collectors.toList()),
                 suggestions.stream().map(s -> s.getProperty("frequency")).collect(Collectors.toList()));
+
+        assertInputsForSearch(suggestions, model);
     }
 
     /**
-     * Checks the correctness of the input stored in CommandInputModel for each suggestion.
+     * Checks if the input is cleared after the suggestion is chosen.
+     *
+     * @param suggestions The actual list of suggestions.
+     * @param model The app's model.
+     */
+    public static void assertInputsForSearch(List<SuggestionItem> suggestions, Model model) {
+        for (int i = 0; i < suggestions.size(); i++) {
+            SuggestionItem suggestionItem = suggestions.get(i);
+            suggestionItem.getAction().run();
+            String input = model.getInput();
+            assertTrue(input.isEmpty());
+        }
+    }
+
+    /**
+     * Checks the correctness of the input stored in CommandInputModel for each generator.
      *
      * @param expectedInputs The expected list of inputs.
      * @param suggestions The actual list of suggestions.

@@ -55,6 +55,11 @@ public class ViewStateModelImpl implements ViewStateModel {
         this.input.setValue(input);
     }
 
+    @Override
+    public void clearInput() {
+        input.setValue("");
+    }
+
     //=========== HelpFlagModel ===================================================================
     @Override
     public BooleanProperty helpOpenProperty() {

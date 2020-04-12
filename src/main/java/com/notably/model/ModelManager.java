@@ -45,6 +45,8 @@ public class ModelManager implements Model {
                         ViewStateModel viewStateModel, ReadOnlyUserPrefModel userPrefModel) {
         requireAllNonNull(blockModel, suggestionModel, viewStateModel, userPrefModel);
 
+        logger.fine("Initializing with block data: " + blockModel + " and user prefs " + userPrefModel);
+
         this.suggestionModel = suggestionModel;
         this.viewStateModel = viewStateModel;
         this.blockModel = blockModel;
@@ -146,6 +148,11 @@ public class ModelManager implements Model {
     @Override
     public void setInput(String input) {
         viewStateModel.setInput(input);
+    }
+
+    @Override
+    public void clearInput() {
+        viewStateModel.clearInput();
     }
 
     @Override

@@ -35,7 +35,8 @@ public class NotablyParser {
     private static final List<String> COMMAND_LIST = List.of(
             NewCommand.COMMAND_WORD, EditCommand.COMMAND_WORD,
             DeleteCommand.COMMAND_WORD, OpenCommand.COMMAND_WORD,
-            HelpCommand.COMMAND_WORD, ExitCommand.COMMAND_WORD);
+            HelpCommand.COMMAND_WORD, ExitCommand.COMMAND_WORD,
+            SearchCommandParser.COMMAND_WORD);
 
     private static final String ERROR_MESSAGE = "\"%s\" is an invalid command format. "
             + "To see the list of available commands, type: help";
@@ -98,6 +99,9 @@ public class NotablyParser {
 
         case ExitCommand.COMMAND_WORD:
             return List.of(new ExitCommand());
+        case SearchCommandParser.COMMAND_WORD:
+            new SearchCommandParser(notablyModel).parse(arguments);
+            return List.of();
         default:
             throw new ParseException(String.format(ERROR_MESSAGE, commandWord));
         }

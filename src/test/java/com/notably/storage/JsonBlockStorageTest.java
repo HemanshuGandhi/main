@@ -39,10 +39,7 @@ public class JsonBlockStorageTest {
     }
 
     /**
-     * Saves the {@code BlockModel} at the specified path.
-     *
-     * @param blockModel
-     * @param filePath
+     * Saves the {@code BlockModel} at the specified {@code filePath}.
      */
     private void saveBlockModel(BlockModel blockModel, String filePath) {
         try {

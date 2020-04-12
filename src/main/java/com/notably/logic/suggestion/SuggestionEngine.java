@@ -7,21 +7,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.notably.commons.path.AbsolutePath;
-import com.notably.logic.commands.suggestion.SuggestionCommand;
 import com.notably.logic.correction.AbsolutePathCorrectionEngine;
 import com.notably.logic.correction.CorrectionEngine;
 import com.notably.logic.correction.CorrectionEngineParameters;
 import com.notably.logic.correction.CorrectionResult;
 import com.notably.logic.correction.CorrectionStatus;
 import com.notably.logic.correction.StringCorrectionEngine;
-import com.notably.logic.parser.suggestion.DeleteSuggestionCommandParser;
-import com.notably.logic.parser.suggestion.EditSuggestionCommandParser;
-import com.notably.logic.parser.suggestion.ErrorSuggestionCommandParser;
-import com.notably.logic.parser.suggestion.ExitSuggestionCommandParser;
-import com.notably.logic.parser.suggestion.HelpSuggestionCommandParser;
-import com.notably.logic.parser.suggestion.NewSuggestionCommandParser;
-import com.notably.logic.parser.suggestion.OpenSuggestionCommandParser;
-import com.notably.logic.parser.suggestion.SearchSuggestionCommandParser;
+import com.notably.logic.suggestion.generator.SuggestionGenerator;
+import com.notably.logic.suggestion.handler.DeleteSuggestionArgHandler;
+import com.notably.logic.suggestion.handler.EditSuggestionHandler;
+import com.notably.logic.suggestion.handler.ExitSuggestionHandler;
+import com.notably.logic.suggestion.handler.HelpSuggestionHandler;
+import com.notably.logic.suggestion.handler.NewSuggestionArgHandler;
+import com.notably.logic.suggestion.handler.OpenSuggestionArgHandler;
+import com.notably.logic.suggestion.handler.SearchSuggestionArgHandler;
 import com.notably.model.Model;
 
 import javafx.beans.property.StringProperty;
@@ -32,10 +31,10 @@ import javafx.beans.property.StringProperty;
 public class SuggestionEngine {
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
-    private static final List<String> COMMAND_LIST = List.of(NewSuggestionCommandParser.COMMAND_WORD,
-            EditSuggestionCommandParser.COMMAND_WORD, DeleteSuggestionCommandParser.COMMAND_WORD,
-            OpenSuggestionCommandParser.COMMAND_WORD, HelpSuggestionCommandParser.COMMAND_WORD,
-            ExitSuggestionCommandParser.COMMAND_WORD, SearchSuggestionCommandParser.COMMAND_WORD);
+    private static final List<String> COMMAND_LIST = List.of(NewSuggestionArgHandler.COMMAND_WORD,
+            EditSuggestionHandler.COMMAND_WORD, DeleteSuggestionArgHandler.COMMAND_WORD,
+            OpenSuggestionArgHandler.COMMAND_WORD, HelpSuggestionHandler.COMMAND_WORD,
+            ExitSuggestionHandler.COMMAND_WORD, SearchSuggestionArgHandler.COMMAND_WORD);
 
     private static final String ERROR_MESSAGE_INVALID_COMMAND = "\"%s\" is an invalid command format. "
             + "To see the list of available commands, type: help";
@@ -64,16 +63,17 @@ public class SuggestionEngine {
     private void suggest(String userInput) {
         Objects.requireNonNull(userInput);
 
-        Optional<? extends SuggestionCommand> suggestionCommand = parseCommand(userInput);
+        Optional<? extends SuggestionGenerator> suggestionCommand = parseCommand(userInput);
         suggestionCommand.ifPresent(s -> s.execute(model));
     }
 
     /**
      * Parses the user input.
+     *
      * @param userInput The user's input.
-     * @return The corresponding SuggestionCommand.
+     * @return The corresponding SuggestionGenerator.
      */
-    private Optional<? extends SuggestionCommand> parseCommand(String userInput) {
+    private Optional<? extends SuggestionGenerator> parseCommand(String userInput) {
         Objects.requireNonNull(userInput);
 
         if (userInput.isBlank()) {
@@ -99,34 +99,35 @@ public class SuggestionEngine {
         final String arguments = matcher.group("arguments");
 
         switch (commandWord) {
-        case OpenSuggestionCommandParser.COMMAND_WORD:
-            return new OpenSuggestionCommandParser(model, pathCorrectionEngine).parse(arguments);
+        case OpenSuggestionArgHandler.COMMAND_WORD:
+            return new OpenSuggestionArgHandler(model, pathCorrectionEngine).handleArg(arguments);
 
-        case DeleteSuggestionCommandParser.COMMAND_WORD:
-            return new DeleteSuggestionCommandParser(model, pathCorrectionEngine).parse(arguments);
+        case DeleteSuggestionArgHandler.COMMAND_WORD:
+            return new DeleteSuggestionArgHandler(model, pathCorrectionEngine).handleArg(arguments);
 
-        case SearchSuggestionCommandParser.COMMAND_WORD:
-            return new SearchSuggestionCommandParser(model).parse(arguments);
+        case SearchSuggestionArgHandler.COMMAND_WORD:
+            return new SearchSuggestionArgHandler(model).handleArg(arguments);
 
-        case NewSuggestionCommandParser.COMMAND_WORD:
-            return new NewSuggestionCommandParser(model).parse(arguments);
+        case NewSuggestionArgHandler.COMMAND_WORD:
+            return new NewSuggestionArgHandler(model).handleArg(arguments);
 
-        case EditSuggestionCommandParser.COMMAND_WORD:
-            return new EditSuggestionCommandParser(model).parse(arguments);
+        case EditSuggestionHandler.COMMAND_WORD:
+            return new EditSuggestionHandler(model).handle();
 
-        case HelpSuggestionCommandParser.COMMAND_WORD:
-            return new HelpSuggestionCommandParser(model).parse(arguments);
+        case HelpSuggestionHandler.COMMAND_WORD:
+            return new HelpSuggestionHandler(model).handle();
 
-        case ExitSuggestionCommandParser.COMMAND_WORD:
-            return new ExitSuggestionCommandParser(model).parse(arguments);
+        case ExitSuggestionHandler.COMMAND_WORD:
+            return new ExitSuggestionHandler(model).handle();
 
         default:
-            return new ErrorSuggestionCommandParser(model).parse(arguments);
+            throw new AssertionError("Default path will never get executed.");
         }
     }
 
     /**
      * Generates new suggestions whenever the command input line changes.
+     *
      * @param inputProperty The user's input.
      */
     private void autoUpdateInput(StringProperty inputProperty) {

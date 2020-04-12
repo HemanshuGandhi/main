@@ -7,11 +7,14 @@ import com.notably.model.block.exceptions.CannotModifyRootException;
 import com.notably.model.block.exceptions.NoSuchBlockException;
 
 /**
- * Implementation class of BlockTree.
+ * Implementation class of {@link BlockTree}.
  */
 public class BlockTreeImpl implements BlockTree {
     private BlockTreeItem root;
 
+    /**
+     * Creates a new {@link BlockTree} implementation object.
+     */
     public BlockTreeImpl() {
         this.root = BlockTreeItemImpl.createRootBlockTreeItem();
     }

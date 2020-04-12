@@ -1,12 +1,15 @@
 package com.notably.logic.parser;
 
-import static com.notably.logic.parser.CliSyntax.PREFIX_TITLE;
+import static com.notably.commons.parser.CliSyntax.PREFIX_TITLE;
 import static java.util.Objects.requireNonNull;
 
 import java.util.List;
 import java.util.logging.Logger;
 
 import com.notably.commons.LogsCenter;
+import com.notably.commons.parser.ArgumentMultimap;
+import com.notably.commons.parser.ArgumentTokenizer;
+import com.notably.commons.parser.ParserUtil;
 import com.notably.commons.path.AbsolutePath;
 import com.notably.logic.commands.OpenCommand;
 import com.notably.logic.correction.CorrectionEngine;
@@ -23,7 +26,10 @@ public class OpenCommandParser implements CommandParser<OpenCommand> {
             + "Please provide a valid Path";
     private static final String ERROR_EMPTY_PATH = "Empty path detected. "
             + "Please provide a valid Path";
+    private static final String ERROR_ROOT_PATH = "Opening the root path is forbidden. "
+            + "Please provide a valid Path";
     private static final Logger logger = LogsCenter.getLogger(OpenCommandParser.class);
+    private static final AbsolutePath ROOT = AbsolutePath.fromString("/");
     private Model notablyModel;
     private CorrectionEngine<AbsolutePath> pathCorrectionEngine;
 
@@ -63,6 +69,10 @@ public class OpenCommandParser implements CommandParser<OpenCommand> {
         }
 
         AbsolutePath correctedPath = correctionResult.getCorrectedItems().get(0);
+        if (correctedPath.equals(ROOT)) {
+            logger.warning("Root path detected");
+            throw new ParseException(ERROR_ROOT_PATH);
+        }
         logger.info(String.format("OpenCommand with the path '%s' is created", correctedPath));
         return List.of(new OpenCommand(correctedPath));
     }

@@ -22,6 +22,8 @@ public class UserPrefModelImpl implements UserPrefModel {
 
     /**
      * Creates a {@code UserPrefs} with the prefs in {@code userPrefs}.
+     *
+     * @param userPrefs {@code UserPrefs} data
      */
     public UserPrefModelImpl(ReadOnlyUserPrefModel userPrefs) {
         this();

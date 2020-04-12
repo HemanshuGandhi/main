@@ -4,7 +4,7 @@ import static com.notably.commons.util.AppUtil.checkArgument;
 import static java.util.Objects.requireNonNull;
 
 /**
- * Represents a Block's title in Notably.
+ * Represents a {@code Block}'s title in Notably.
  * Guarantees: immutable; is valid as declared in {@link #isValidTitle(String)}
  */
 public class Title {
@@ -26,7 +26,7 @@ public class Title {
     /**
      * Constructs a {@code Title}.
      *
-     * @param title A valid title.
+     * @param title A valid title text string.
      */
     public Title(String title) {
         requireNonNull(title);
@@ -44,7 +44,7 @@ public class Title {
     }
 
     /**
-     * Returns a String of the Title content.
+     * Returns a {@code String} of the {@code Title} content.
      *
      * @return Title text string.
      */

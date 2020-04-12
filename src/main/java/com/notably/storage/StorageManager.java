@@ -12,7 +12,7 @@ import com.notably.model.userpref.ReadOnlyUserPrefModel;
 import com.notably.model.userpref.UserPrefModel;
 
 /**
- * Manages storage of Block data in local storage.
+ * Manages storage of BlockModel data in local storage.
  */
 public class StorageManager implements Storage {
 
@@ -45,7 +45,7 @@ public class StorageManager implements Storage {
     }
 
 
-    // ================ Block methods ==============================
+    // ================ BlockModel methods ==============================
 
     @Override
     public Path getBlockDataFilePath() {
